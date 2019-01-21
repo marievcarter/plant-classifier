@@ -10,11 +10,13 @@
   "author": "jesse heaslip",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.18.0",
     "cloudinary": "^1.11.0",
     "cors": "^2.8.4",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
-    "express-form-data": "^2.0.6"
+    "express-form-data": "^2.0.6",
+    "python-shell": "^1.0.7"
   },
   "devDependencies": {
     "nodemon": "^1.18.4"
