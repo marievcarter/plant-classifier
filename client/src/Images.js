@@ -17,11 +17,15 @@ export default props =>
         onError={() => props.onError(image.public_id)}
       />
       <br />
-      <button onClick={props.runScripts}>test image</button>
+      <button onClick={props.runScripts} className="identifyBtn">
+        identify plant
+      </button>
       <br />
       <div className="results">
-        <h3>RESULTS:</h3>
-        <p>{props.results}</p>
+        <h2>RESULTS:</h2>
+        <p>
+          <b>{props.results}</b>
+        </p>
       </div>
     </div>
   ));

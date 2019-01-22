@@ -120,13 +120,12 @@ export default class App extends Component {
 
   render() {
     const { loading, uploading, images, results } = this.state;
-    // !this.state.images[0] ? null : console.log(this.state.images[0].secure_url);
     const content = () => {
       switch (true) {
-        case loading:
-          return <WakeUp />;
-        case uploading:
-          return <Spinner />;
+        // case loading:
+        //   return <WakeUp />;
+        // case uploading:
+        //   return <Spinner />;
         case images.length > 0:
           return (
             <Images
@@ -145,8 +144,9 @@ export default class App extends Component {
     return (
       <div className="container">
         <Notifications />
+        <h1 className="title">Plant Doctor</h1>
         <div className="buttons">{content()}</div>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     );
   }
