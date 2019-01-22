@@ -5,9 +5,13 @@ const formData = require('express-form-data');
 const cors = require('cors');
 const { CLIENT_ORIGIN } = require('./config');
 
+// needed to download image to local folder.
 const Fs = require('fs');
 const Path = require('path');
 const Axios = require('axios');
+
+// needed to run python scripts
+const shell = require('shelljs');
 
 const app = express();
 
@@ -27,24 +31,12 @@ app.use(formData.parse());
 
 app.get('/wake-up', (req, res) => res.send('👌'));
 
-// async function downloadImage () {
-//   const url = 'https://unsplash.com/photos/AaEQmoufHLk/download?force=true'
-//   const path = Path.resolve(__dirname, 'images', 'code.jpg')
-//   const writer = Fs.createWriteStream(path)
-
-//   const response = await Axios({
-//     url,
-//     method: 'GET',
-//     responseType: 'stream'
-//   })
-
-//   response.data.pipe(writer)
-
-//   return new Promise((resolve, reject) => {
-//     writer.on('finish', resolve)
-//     writer.on('error', reject)
-//   })
-// }
+app.get('/run-scripts', (req, res) => {
+  const results = shell.exec(
+    '/Users/mariecarter/Documents/GHP/GH_Senior/stackathon/react-image-upload/server/test_model.sh'
+  );
+  res.json(results);
+});
 
 let url = '';
 app.get('/image-download', (req, res) => {
@@ -59,7 +51,7 @@ app.get('/image-download', (req, res) => {
       response.data.pipe(writer);
       return writer;
     })
-    .then(writ => {
+    .then(function(writ) {
       const log = new Promise((resolve, reject) => {
         writ.on('finish', resolve);
         writ.on('error', reject);
@@ -68,7 +60,6 @@ app.get('/image-download', (req, res) => {
       res.sendStatus(201);
     })
     .catch(err => res.status(400).json(err));
-  // console.log(response.data);
 });
 
 app.post('/image-upload', (req, res) => {

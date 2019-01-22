@@ -18,6 +18,7 @@ export default class App extends Component {
     loading: true,
     uploading: false,
     images: [],
+    results: '',
   };
 
   componentDidMount() {
@@ -78,16 +79,30 @@ export default class App extends Component {
           images,
         });
       })
+      .then(() => {
+        fetch(`${API_URL}/image-download`, {
+          method: 'GET',
+        });
+      })
       .catch(err => {
         err.json().then(e => {
           this.toast(e.message, 'custom', 2000, toastColor);
           this.setState({ uploading: false });
         });
       });
+  };
 
-    fetch(`${API_URL}/image-download`, {
+  runScripts = () => {
+    fetch(`${API_URL}/run-scripts`, {
       method: 'GET',
-    });
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        console.log(typeof data, data);
+        return this.setState({ results: data });
+      });
   };
 
   filter = id => {
@@ -95,7 +110,7 @@ export default class App extends Component {
   };
 
   removeImage = id => {
-    this.setState({ images: this.filter(id) });
+    this.setState({ images: this.filter(id), results: '' });
   };
 
   onError = id => {
@@ -104,7 +119,7 @@ export default class App extends Component {
   };
 
   render() {
-    const { loading, uploading, images } = this.state;
+    const { loading, uploading, images, results } = this.state;
     // !this.state.images[0] ? null : console.log(this.state.images[0].secure_url);
     const content = () => {
       switch (true) {
@@ -118,6 +133,8 @@ export default class App extends Component {
               images={images}
               removeImage={this.removeImage}
               onError={this.onError}
+              runScripts={this.runScripts}
+              results={results}
             />
           );
         default:
